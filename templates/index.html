@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        nav {
+            margin-bottom: 20px;
+            text-align: center; /* Center the navigation links */
+        }
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: red; /* Green color for the links */
+            font-size: 18px;
+        }
+        nav a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+        .result img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .prediction-info {
+            margin-top: 20px;
+        }
+        .prediction-info h3 {
+            color: #333;
+        }
+        .prediction-info p {
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Plant Disease Prediction</h1>
+    </header>
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+        <a href="{{ url_for('contact') }}">Contact Us</a>
+        <a href="{{ url_for('login') }}">Login</a> <!-- Added Login Link -->
+    </nav>
+    <div class="container">
+        <h2>Upload an Image for Prediction</h2>
+        <form id="upload-form" action="/" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <button type="submit">Upload and Predict</button>
+        </form>
+
+        <!-- Result Display -->
+        <div class="result" id="result-container" style="display: none;">
+            <h3>Prediction Result</h3>
+            <div id="prediction-details">
+                <!-- Prediction details will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle form submission and display prediction results dynamically
+        const form = document.getElementById('upload-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const formData = new FormData(form);
+            const response = await fetch('/', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            const predictionDetails = document.getElementById('prediction-details');
+            const resultContainer = document.getElementById('result-container');
+            
+            // Clear any previous results
+            predictionDetails.innerHTML = '';
+            
+            if (result.predicted_class !== undefined && result.plant_data !== undefined) {
+                const { predicted_class, plant_data } = result;
+
+                // Display the image preview
+                const imagePreview = document.createElement('img');
+                imagePreview.src = URL.createObjectURL(formData.get('image'));
+                predictionDetails.appendChild(imagePreview);
+
+                // Display the predicted class and plant data
+                const classInfo = document.createElement('p');
+                classInfo.innerHTML = `<strong>Predicted Class:</strong> ${predicted_class}`;
+                predictionDetails.appendChild(classInfo);
+
+                if (plant_data) {
+                    const plantInfo = document.createElement('div');
+                    plantInfo.classList.add('prediction-info');
+                    plantInfo.innerHTML = ` 
+                        <h3>Plant Information:</h3>
+                        <p><strong>Name:</strong> ${plant_data[1]}</p>
+                        <p><strong>Type:</strong> ${plant_data[3]}</p>
+                        <p><strong>Condition:</strong> ${plant_data[4]}</p>
+                        <p><strong>Recommended Treatment:</strong> ${plant_data[5]}</p>
+                        <p><strong>Soil Type:</strong> ${plant_data[6]}</p>
+                        <p><strong>Water Requirement:</strong> ${plant_data[8]}</p>
+                        <p><strong>Temperature (°C):</strong> ${plant_data[9]}</p>
+                        <p><strong>Humidity (%):</strong> ${plant_data[10]}</p>
+                    `;
+                    predictionDetails.appendChild(plantInfo);
+                }
+                
+                // Show the result container
+                resultContainer.style.display = 'block';
+            } else {
+                predictionDetails.innerHTML = '<p>Sorry, something went wrong. Please try again.</p>';
+                resultContainer.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

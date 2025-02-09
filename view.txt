@@ -1,0 +1,4 @@
+
+USE plat;
+SHOW TABLES;
+SELECT * FROM plant_info

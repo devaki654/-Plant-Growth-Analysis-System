@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd; /* Light blue background color */
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50; /* Darker blue for the main heading */
+        }
+        h2 {
+            color: #16a085; /* Teal color for subheadings */
+            margin-top: 20px;
+        }
+        p {
+            color: #34495e; /* Dark gray for regular text */
+            line-height: 1.6;
+        }
+        /* Centering navigation links */
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #2980b9; /* Light blue for navigation links */
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+            color: #16a085; /* Change to teal on hover */
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+        <a href="{{ url_for('contact') }}">Contact Us</a>
+        <a href="{{ url_for('login') }}">Login</a> 
+    </nav>
+
+    <div class="container">
+        <h1>About Us</h1>
+        <p>Welcome to our application! We are dedicated to providing the best plant classification services using advanced machine learning techniques.</p>
+        <p>Our team consists of experts in machine learning and botany, working together to help you identify plants easily and accurately.</p>
+        <p>Thank you for using our service!</p>
+
+        <!-- Mission Section -->
+        <h2>Our Mission</h2>
+        <p>Our mission is to empower individuals and organizations by providing cutting-edge technology for plant identification and disease detection. We aim to create an accessible and reliable tool that helps people protect their crops and enhance agricultural productivity.</p>
+
+        <!-- Vision Section -->
+        <h2>Our Vision</h2>
+        <p>We envision a future where technology and nature work hand-in-hand to create a sustainable and efficient agricultural ecosystem. Our goal is to continue innovating and expanding our services to support farmers, researchers, and nature enthusiasts globally.</p>
+
+    </div>
+</body>
+</html>
